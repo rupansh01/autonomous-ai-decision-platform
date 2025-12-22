@@ -1,0 +1,379 @@
+{
+  "name": "Autonomous AI Decision & Reasoning Platform",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai_decision",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cb35e021-52de-46a0-b377-1ae454fcc8f7",
+      "name": "Webhook",
+      "webhookId": "475e7659-5af8-4405-81bc-bac2d2067cc7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9f8e9fa-c86d-4f07-8481-a33539078887",
+              "name": "complaint_text",
+              "value": "={{ $json.body.complaint_text }}",
+              "type": "string"
+            },
+            {
+              "id": "04825b03-88f9-4ca8-be74-f6ee500a5945",
+              "name": "customer_type",
+              "value": "={{ $json.body.customer_type }}",
+              "type": "string"
+            },
+            {
+              "id": "e21bbc7d-8cad-4b25-96b8-0d30c1eb392e",
+              "name": "past_complaints",
+              "value": "={{ $json.body.past_complaints }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ba2d62d6-c032-4650-8653-c1fd821d8de9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://unshowering-unfueled-deborah.ngrok-free.dev/decide",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "complaint_text",
+              "value": "={{ $json.complaint_text }}"
+            },
+            {
+              "name": "customer_type",
+              "value": "={{ $json.customer_type }}"
+            },
+            {
+              "name": "past_complaints",
+              "value": "={{ $json.past_complaints }}"
+            },
+            {
+              "name": "severity",
+              "value": "0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "11f36c04-bd52-45b7-9eff-7db509afac1a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e8e139f0-b9b5-4de8-a1aa-5b544e48b9a9",
+              "leftValue": "={{ $json.confidence }}",
+              "rightValue": 0.8,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "d925f12b-a7ce-4e72-a171-9038919d6780",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "30a31e82-2a3a-420b-be94-be721a294dca",
+              "name": "final_action",
+              "value": "ESCALATE_TO_HUMAN",
+              "type": "string"
+            },
+            {
+              "id": "50b98129-a34d-4e15-8714-bc8508e82d03",
+              "name": "decision",
+              "value": "={{ $json.decision }}",
+              "type": "string"
+            },
+            {
+              "id": "e701b5f0-118c-4517-b2f0-cc5bca3122b7",
+              "name": "reason",
+              "value": "={{ $json.reason }}",
+              "type": "string"
+            },
+            {
+              "id": "6f39fbea-3139-4e76-b0c2-2a9cf4671b53",
+              "name": "confidence",
+              "value": "={{ $json.confidence }}",
+              "type": "number"
+            },
+            {
+              "id": "c58db157-e7fe-4230-b48e-beac2d6217f3",
+              "name": "action_taken",
+              "value": "ESCALATE_TO_HUMAN",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        96
+      ],
+      "id": "448c7667-876c-40ba-9a09-f993ddb1762f",
+      "name": "Escalate_To_Human"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f981b8a-c5da-464b-aa5b-702fa00ee6f7",
+              "name": "final_action",
+              "value": "AUTO_EXECUTE",
+              "type": "string"
+            },
+            {
+              "id": "634783ce-211f-47a3-b461-cbdf3b4859ac",
+              "name": "decision",
+              "value": "={{$json.decision}}",
+              "type": "string"
+            },
+            {
+              "id": "7fef43cb-8618-442a-b0cd-6f3a805f0a68",
+              "name": "reason",
+              "value": "={{$json.reason}}",
+              "type": "string"
+            },
+            {
+              "id": "e9fc3de0-e662-4dd7-800a-eedf0ff161c9",
+              "name": "confidence",
+              "value": "={{$json.confidence}}",
+              "type": "string"
+            },
+            {
+              "id": "a9e8705e-957e-470f-a5ca-6225218b5fbb",
+              "name": "action_taken",
+              "value": "AUTO_EXECTUE",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        -96
+      ],
+      "id": "81b7e106-74a7-42f0-ac2c-bff976423382",
+      "name": "Auto_Action"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6b3af4f6-fa99-4462-97b3-eb8f47ea50bb",
+              "name": "timestamp",
+              "value": "={{$now}}",
+              "type": "string"
+            },
+            {
+              "id": "e8d0cb1f-22c6-4b9f-a2d6-57cf7d2e262d",
+              "name": "decision",
+              "value": "={{ $json.decision }}",
+              "type": "string"
+            },
+            {
+              "id": "d7cdfec9-010e-439c-857c-1b11380987bf",
+              "name": "confidence",
+              "value": "={{ $json.confidence }}",
+              "type": "number"
+            },
+            {
+              "id": "6272e666-2f9b-4af0-aac0-92e744a8e353",
+              "name": "action_taken",
+              "value": "={{$json.final_action}}",
+              "type": "string"
+            },
+            {
+              "id": "7e2402b6-944d-44bf-99f2-ea4bb3c2d8ad",
+              "name": "source",
+              "value": "AI_DECISION_PLATFORM",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1104,
+        32
+      ],
+      "id": "bc468b0e-6c51-4b9c-a411-3e974a68a7c1",
+      "name": "Audit_Log"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"decision\": \"{{$json.decision}}\",\n  \"confidence\": \"{{$json.confidence}}\",\n  \"action_taken\": \"{{$json.action_taken}}\",\n  \"reason\": \"{{$json.reason}}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1312,
+        32
+      ],
+      "id": "3e92fe5e-c305-44dc-b7c9-3b646f7889c0",
+      "name": "Webhook_Response"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Auto_Action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escalate_To_Human",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalate_To_Human": {
+      "main": [
+        [
+          {
+            "node": "Audit_Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto_Action": {
+      "main": [
+        [
+          {
+            "node": "Audit_Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit_Log": {
+      "main": [
+        [
+          {
+            "node": "Webhook_Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7d701d4c-04d8-4f54-8b90-37004c41319a",
+  "meta": {
+    "instanceId": "0623c8f41efec2fa191ab1cd4ba97b33256d41dc555a340bf4ea33e70e4b5545"
+  },
+  "id": "hNxuXkOinpLQ1dPB",
+  "tags": []
+}
