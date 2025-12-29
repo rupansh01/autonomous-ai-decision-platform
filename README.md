@@ -31,4 +31,10 @@ Webhook → n8n → FastAPI → OpenAI → Decision Engine → Action → MLflow
 ## Use Case
 Can be applied to customer support automation, refund processing,
 incident triaging, or compliance-sensitive workflows.
+
+## 👨‍💻 **AUTHOR**
+
+**Rupansh Kumar**
+M.Tech CSE — AI Platform and Workflow Automation Engineer 
+Focused on building **production‑safe, governable AI systems**
  
