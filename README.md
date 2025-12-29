@@ -37,4 +37,8 @@ incident triaging, or compliance-sensitive workflows.
 **Rupansh Kumar**
 M.Tech CSE — AI Platform and Workflow Automation Engineer 
 Focused on building **production‑safe, governable AI systems**
+
+* GitHub: [https://github.com/rupansh01](https://github.com/rupansh01)
+* LinkedIn: [https://www.linkedin.com/in/rupanshkumar](https://www.linkedin.com/in/rupanshkumar)
+
  
